@@ -12,8 +12,6 @@ namespace Chat.SignalRHub
 {
 	public class ChatHub : Hub
 	{
-		private static readonly IHubContext instance = GlobalHost.ConnectionManager.GetHubContext<ChatHub>();
-
 		public void Register(string chatClientId)
 		{
 			Storage.RegisterChatEndPoint(chatClientId, this.Context.ConnectionId);
