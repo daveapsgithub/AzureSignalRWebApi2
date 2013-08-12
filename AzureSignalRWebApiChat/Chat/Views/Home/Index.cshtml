@@ -13,6 +13,8 @@
 
 <p>This will send a the message via SignalR, the Azure table storage will look up the end point for the other chat client, a Web Api method will be called to the other end point and then the SignalR of the other client will send a message to the other browser.</p>
 
+<p>By default this project has been setup to run on one Azure Instance. It should work in multiple instances.  However if you go Solution->AzureSignalRWebApiChat->Roles-> and right click on Chat, select properties and increase the instance count to say 5 (or more) then it does not work for some strange reason.</p>
+
 <form id='myForm'>
 	<input type="radio" name='ClientId' value='A' style='width:30px'/>Chat client A</br>
 	<input type="radio" name='ClientId' value='B' style='width:30px'/>Chat client B</br>
