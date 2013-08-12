@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@section featured {
+   
+}
+
+<h1>Azure SignalR Web Api example</h1>
+
+<p>Have this web page opened twice.  In one select Client "A" and click Register. In the other select Client "B" and click Register.</p>
+
+<p>Then type a message and click Send.</p>
+
+<p>This will send a the message via SignalR, the Azure table storage will look up the end point for the other chat client, a Web Api method will be called to the other end point and then the SignalR of the other client will send a message to the other browser.</p>
+
+<p>By default this project has been setup to run on one Azure Instance. It should work in multiple instances.  However if you go Solution->AzureSignalRWebApiChat->Roles-> and right click on Chat, select properties and increase the instance count to 2 (or more) then it does not work for some strange reason.</p>
+<form id='myForm'>
+	<input type="radio" name='ClientId' value='A' style='width:30px'/>Chat client A</br>
+	<input type="radio" name='ClientId' value='B' style='width:30px'/>Chat client B</br>
+	<input type='button' id='register' value='Register' />
+
+	<br />
+	<br />
+
+	<input type='text' id='txtMessage' size='50' /><input type='button' id='send' value='Send' />
+
+	<div id='history'>
+	</div>
+
+</form>
+
+
+    <!--Script references. -->
+    <!--Reference the SignalR library. -->
+    <!--Add script to update the page and send messages.--> 
+    <script type="text/javascript">
+    	$(function () {
+
+    		// Declare a proxy to reference the hub. 
+    		var chat = $.connection.chatHub;
+
+    		chat.client.sendMessageToClient = function (message) {
+    			$('#history').append("<br/>" + message);
+    		};
+
+
+    		// Start the connection.
+    		$.connection.hub.start().done(function () {
+
+    			$('#register').click(function () {
+
+    				// Call the Send method on the hub. 
+    				chat.server.register($('input[name=ClientId]:checked', '#myForm').val());
+
+    			});
+
+
+    			$('#send').click(function () {
+
+    				// Call the Send method on the hub. 
+    				chat.server.sendMessageToServer($('input[name=ClientId]:checked', '#myForm').val(), $('#txtMessage').val());
+    			});
+
+    		});
+    	});
+    </script>
