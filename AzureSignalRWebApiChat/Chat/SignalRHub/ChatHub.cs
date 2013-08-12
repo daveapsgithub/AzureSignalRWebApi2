@@ -26,7 +26,7 @@ namespace Chat.SignalRHub
 		/// <param name="connectionId">The connection id.</param>
 		public static void SendMessageToClient(string message, string connectionId)
 		{
-			instance.Clients.Client(connectionId).SendMessageToClient(message);
+			GlobalHost.ConnectionManager.GetHubContext<ChatHub>().Clients.Client(connectionId).SendMessageToClient(message);
 
 			Debug.WriteLine("Sending a message to the client on SignalR connection id: " + connectionId);
 			Debug.WriteLine("Via the Web Api end point: " + RoleEnvironment.CurrentRoleInstance.InstanceEndpoints["WebApi"].IPEndpoint.ToString());
