@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Net.Http.Headers;
 using System.Web;
 using Chat.SignalRHub;
+using System.Diagnostics;
 
 namespace Chat.WebApi
 {
@@ -15,6 +16,8 @@ namespace Chat.WebApi
 		[HttpGet]
 		public void SendMessage(string message, string connectionId)
 		{
+			Trace.TraceInformation("Received a WebApi request on: " + this.Request.RequestUri.ToString());
+
 			//return message;
 			ChatHub.SendMessageToClient(message, connectionId);
 		}
@@ -34,6 +37,8 @@ namespace Chat.WebApi
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 			string url = "http://" + endPoint + "/api/ChatWebApi/SendMessage/?Message=" + HttpUtility.UrlEncode(message) + "&ConnectionId=" + connectionId;
+
+			Trace.WriteLine("Sending a WebApi request to: " + url);
 
 			client.GetAsync(url);
 		}
